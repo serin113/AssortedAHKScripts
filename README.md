@@ -11,4 +11,4 @@ Just a bunch of AHK scripts that I use. 'Nuff said.
 3. Run the script.
 4. Marry the script.
 
-*DISCLAIMER: This is not affiliated with [the script](http://en.wikipedia.org/wiki/The_Script) in any way.*
+*DISCLAIMER: This is not affiliated with [the script](http://en.wikipedia.org/wiki/The_Script) in any way. Awesome band, though.*
