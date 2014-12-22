@@ -16,7 +16,7 @@ CoordMode, Mouse, Screen
 
 
 ;
-; Functions
+; FUNCTIONS
 ;
 
 ProcessWait(PidOrName) {
@@ -90,12 +90,13 @@ PB_PushNote(PB_Token, PB_Title, PB_Message) {
 }
 
 ;
-; Variables
+; VARIABLES
+; Change the program paths as needed.
 ;
 
-rainmeter := "%ProgramFiles%\Rainmeter\Rainmeter.exe" ; assuming you did install Rainmeter in the default folder
-nircmd := "C:\Users\%A_UserName%\OneDrive\nircmd-x64\nircmd.exe" ; well, NirCmd's in my OneDrive, so I used that as an example.
-pushbullet := "%ProgramFiles%\Pushbullet\pushbullet.exe" ; assuming you installed Pushbullet in the default folder
+rainmeter := "path\to\Rainmeter.exe" ; (http://rainmeter.net/)
+nircmd := "path\to\nircmd.exe" ; (http://www.nirsoft.net/utils/nircmd.html)
+pushbullet := "path\to\pushbullet.exe" ; (https://www.pushbullet.com/)
 
 ;
 ; Other stuff to be run every time the script starts
@@ -284,13 +285,21 @@ RETURN ; end initialization
 
 ^PrintScreen::
 {
-    Run, "C:\Windows\Sysnative\SnippingTool.exe",,UseErrorLevel ; Sysnative?
-    if ErrorLevel="ERROR" ; Nope.
-        Run, "C:\Windows\System32\SnippingTool.exe",,UseErrorLevel ; System32?
-    if ErrorLevel="ERROR" ; Nope.
-        Run, "C:\Windows\SysWOW64\SnippingTool.exe",,UseErrorLevel ; SysWOW64, then?
+; Windows redirection stuff explained here: (http://www.samlogic.net/articles/sysnative-folder-64-bit-windows.htm)
+
+	if A_Is64bitOS {
+	; if Windows is 64bit
+		if A_PtrSize=4 ; if AHK is 32bit
+			Run, "%A_WinDir%\Sysnative\SnippingTool.exe",,UseErrorLevel ; access 64bit tool from 32bit program
+			
+		; else, if AHK is 64bit
+		Run, "%A_WinDir%\SysWOW64\SnippingTool.exe",,UseErrorLevel ; access 64bit tool from 64bit program
+	}
+    
+	; else, if Windows is 32bit (and AHK is 32bit, can't be anything else)
+	Run, "%A_WinDir%\System32\SnippingTool.exe",,UseErrorLevel ; access 32bit tool from 32bit program
         
-    return ; assuming SnippingTool can never fail to launch, which is false
+    return
 }
 
 
